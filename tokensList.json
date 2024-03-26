@@ -1,0 +1,493 @@
+{
+    "2emYMetySwE7Xh6qrG1AwAQ3TDvrLkUSpSZ5AjcWCc7B": {
+        "chainId": "solana",
+        "dexId": "raydium",
+        "url": "https://dexscreener.com/solana/hwzzvns7h56jqusvpquqtdgfhwvvs7w7thijqv1pkkt1",
+        "pairAddress": "HWzzvnS7h56JQusVpQuqtDgFHWVVS7w7ThijQv1pkKt1",
+        "baseToken": {
+            "address": "2emYMetySwE7Xh6qrG1AwAQ3TDvrLkUSpSZ5AjcWCc7B",
+            "name": "Lormhole",
+            "symbol": "L"
+        },
+        "quoteToken": {
+            "address": "So11111111111111111111111111111111111111112",
+            "name": "Wrapped SOL",
+            "symbol": "SOL"
+        },
+        "priceNative": "0.00003586",
+        "priceUsd": "0.005263",
+        "txns": {
+            "m5": {
+                "buys": 10,
+                "sells": 14
+            },
+            "h1": {
+                "buys": 163,
+                "sells": 226
+            },
+            "h6": {
+                "buys": 1237,
+                "sells": 1249
+            },
+            "h24": {
+                "buys": 5407,
+                "sells": 5491
+            }
+        },
+        "volume": {
+            "h24": 1751173.93,
+            "h6": 374351.11,
+            "h1": 43217.47,
+            "m5": 2759.4
+        },
+        "priceChange": {
+            "m5": 0.17,
+            "h1": 4.79,
+            "h6": -11.7,
+            "h24": -26.66
+        },
+        "liquidity": {
+            "usd": 321375.25,
+            "base": 30566939,
+            "quote": 1093.7175
+        },
+        "fdv": 5263331,
+        "pairCreatedAt": 1709786713000,
+        "info": {
+            "imageUrl": "https://dd.dexscreener.com/ds-data/tokens/solana/2emymetyswe7xh6qrg1awaq3tdvrlkuspsz5ajcwcc7b.png",
+            "websites": [
+                {
+                    "label": "Website",
+                    "url": "https://lormhole.com"
+                }
+            ],
+            "socials": [
+                {
+                    "type": "twitter",
+                    "url": "https://twitter.com/LormHole"
+                },
+                {
+                    "type": "telegram",
+                    "url": "https://t.me/LormholeCrypto"
+                }
+            ]
+        },
+        "decimals": 6
+    },
+    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
+        "chainId": "solana",
+        "dexId": "meteora",
+        "url": "https://dexscreener.com/solana/arwi1s4daitg5dx7s4m4zsrxqpmd1mrtmbu9ue2tpmeq",
+        "pairAddress": "ARwi1S4DaiTG5DX7S4M4ZsrXqpMD1MrTmbu9ue2tpmEq",
+        "baseToken": {
+            "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "name": "USD Coin",
+            "symbol": "USDC"
+        },
+        "quoteToken": {
+            "address": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+            "name": "USDT",
+            "symbol": "USDT"
+        },
+        "priceNative": "0.9996",
+        "priceUsd": "0.9996",
+        "txns": {
+            "m5": {
+                "buys": 12,
+                "sells": 6
+            },
+            "h1": {
+                "buys": 513,
+                "sells": 364
+            },
+            "h6": {
+                "buys": 4064,
+                "sells": 2972
+            },
+            "h24": {
+                "buys": 15654,
+                "sells": 13249
+            }
+        },
+        "volume": {
+            "h24": 14547822.02,
+            "h6": 4114228.51,
+            "h1": 132404.37,
+            "m5": 707.43
+        },
+        "priceChange": {
+            "m5": 0,
+            "h1": 0,
+            "h6": 0.02,
+            "h24": 0.17
+        },
+        "liquidity": {
+            "usd": 2892756.07,
+            "base": 1246288,
+            "quote": 1646845
+        },
+        "fdv": 1971311288,
+        "pairCreatedAt": 1706214035000,
+        "decimals": 6
+    },
+    "RUpbmGF6p42AAeN1QvhFReZejQry1cLkE1PUYFVVpnL": {
+        "chainId": "solana",
+        "dexId": "raydium",
+        "url": "https://dexscreener.com/solana/hwmxcc95gqvfuvungr23kaozvkjlytaf8uaydqyg8fku",
+        "pairAddress": "HwmXcC95GQVFUVUNgR23KAozvKJLYTAf8UAYDQyG8fKU",
+        "baseToken": {
+            "address": "RUpbmGF6p42AAeN1QvhFReZejQry1cLkE1PUYFVVpnL",
+            "name": "Epep",
+            "symbol": "EPEP"
+        },
+        "quoteToken": {
+            "address": "So11111111111111111111111111111111111111112",
+            "name": "Wrapped SOL",
+            "symbol": "SOL"
+        },
+        "priceNative": "0.0001749",
+        "priceUsd": "0.02537",
+        "txns": {
+            "m5": {
+                "buys": 78,
+                "sells": 68
+            },
+            "h1": {
+                "buys": 703,
+                "sells": 498
+            },
+            "h6": {
+                "buys": 4531,
+                "sells": 4147
+            },
+            "h24": {
+                "buys": 25975,
+                "sells": 20788
+            }
+        },
+        "volume": {
+            "h24": 16384792.54,
+            "h6": 2965907.2,
+            "h1": 357371.05,
+            "m5": 54842.14
+        },
+        "priceChange": {
+            "m5": -0.55,
+            "h1": -9.45,
+            "h6": 1.84,
+            "h24": 36.48
+        },
+        "liquidity": {
+            "usd": 573938.09,
+            "base": 11306995,
+            "quote": 1978.7058
+        },
+        "fdv": 25374458,
+        "pairCreatedAt": 1709926707000,
+        "info": {
+            "imageUrl": "https://dd.dexscreener.com/ds-data/tokens/solana/rupbmgf6p42aaen1qvhfrezejqry1clke1puyfvvpnl.png",
+            "websites": [
+                {
+                    "label": "Website",
+                    "url": "https://www.epepcoin.com"
+                },
+                {
+                    "label": "Instagram",
+                    "url": "https://www.instagram.com/epepcoin"
+                }
+            ],
+            "socials": [
+                {
+                    "type": "twitter",
+                    "url": "https://twitter.com/EpepOnSol"
+                },
+                {
+                    "type": "telegram",
+                    "url": "https://t.me/+4BepWlFNgQRhNDhk"
+                }
+            ]
+        },
+        "decimals": 8
+    },
+    "3JLQf2yUGAuZCYTsMuVsVYUkkD7Tk4jVGFH5UcffvXAP": {
+        "chainId": "solana",
+        "dexId": "raydium",
+        "url": "https://dexscreener.com/solana/fkkztwxu765uz4wyf2ygerdstuv71qzfsac3tgrkjdkt",
+        "pairAddress": "FKkZTwXu765uz4Wyf2YgErDSTuv71QzfSAC3tgRKjDKT",
+        "baseToken": {
+            "address": "3JLQf2yUGAuZCYTsMuVsVYUkkD7Tk4jVGFH5UcffvXAP",
+            "name": "KaboSol",
+            "symbol": "KABO"
+        },
+        "quoteToken": {
+            "address": "So11111111111111111111111111111111111111112",
+            "name": "Wrapped SOL",
+            "symbol": "SOL"
+        },
+        "priceNative": "0.000000007045",
+        "priceUsd": "0.000001025",
+        "txns": {
+            "m5": {
+                "buys": 0,
+                "sells": 0
+            },
+            "h1": {
+                "buys": 0,
+                "sells": 0
+            },
+            "h6": {
+                "buys": 3,
+                "sells": 1
+            },
+            "h24": {
+                "buys": 3,
+                "sells": 1
+            }
+        },
+        "volume": {
+            "h24": 0.11,
+            "h6": 0.11,
+            "h1": 0,
+            "m5": 0
+        },
+        "priceChange": {
+            "m5": 0,
+            "h1": 0,
+            "h6": 12358,
+            "h24": 12358
+        },
+        "liquidity": {
+            "usd": 0.2,
+            "base": 97216,
+            "quote": 0.0007208
+        },
+        "fdv": 1018,
+        "pairCreatedAt": 1703785530000,
+        "decimals": 6
+    },
+    "AtaQNGKRqk7nBexQjr2xPBDYaqXDsAxvwhyufA5Ffmw": {
+        "chainId": "solana",
+        "dexId": "raydium",
+        "url": "https://dexscreener.com/solana/gvgfpidm2qxckwb91j5ag6fm7epycaps6bm1mzssz3qe",
+        "pairAddress": "GVGfpiDm2QxcKwb91J5AG6fm7EPyCAPS6BM1mzsSz3QE",
+        "baseToken": {
+            "address": "AtaQNGKRqk7nBexQjr2xPBDYaqXDsAxvwhyufA5Ffmw",
+            "name": "jester turdeau",
+            "symbol": "turdeau"
+        },
+        "quoteToken": {
+            "address": "So11111111111111111111111111111111111111112",
+            "name": "Wrapped SOL",
+            "symbol": "SOL"
+        },
+        "priceNative": "0.00001340",
+        "priceUsd": "0.001942",
+        "txns": {
+            "m5": {
+                "buys": 276,
+                "sells": 219
+            },
+            "h1": {
+                "buys": 2782,
+                "sells": 2268
+            },
+            "h6": {
+                "buys": 12090,
+                "sells": 9493
+            },
+            "h24": {
+                "buys": 12090,
+                "sells": 9493
+            }
+        },
+        "volume": {
+            "h24": 3018008.46,
+            "h6": 3018008.46,
+            "h1": 1033117.24,
+            "m5": 107508.13
+        },
+        "priceChange": {
+            "m5": 20.8,
+            "h1": 154,
+            "h6": 77357,
+            "h24": 77357
+        },
+        "liquidity": {
+            "usd": 106194.56,
+            "base": 27624631,
+            "quote": 362.2739
+        },
+        "fdv": 1942848,
+        "pairCreatedAt": 1710073271000,
+        "info": {
+            "imageUrl": "https://dd.dexscreener.com/ds-data/tokens/solana/ataqngkrqk7nbexqjr2xpbdyaqxdsaxvwhyufa5ffmw.png",
+            "websites": [
+                {
+                    "label": "Website",
+                    "url": "https://jesterturdeau.com/"
+                }
+            ],
+            "socials": [
+                {
+                    "type": "twitter",
+                    "url": "https://twitter.com/jesterturdeau"
+                },
+                {
+                    "type": "telegram",
+                    "url": "https://t.me/jesterturdeau"
+                }
+            ]
+        },
+        "decimals": 6
+    },
+    "AYrqRZMCLdgMZTA35uQeUD8PhNX56kUX1qcZimwJmmEN": {
+        "chainId": "solana",
+        "dexId": "raydium",
+        "url": "https://dexscreener.com/solana/76fcnutax9m9bga4me2xyhm1y3av8yz7upmzayvcuqik",
+        "pairAddress": "76FCnUtAX9m9BGA4mE2xYhm1Y3aV8yz7UPmzaYvCUQik",
+        "baseToken": {
+            "address": "AYrqRZMCLdgMZTA35uQeUD8PhNX56kUX1qcZimwJmmEN",
+            "name": "burnie sendors",
+            "symbol": "burnie"
+        },
+        "quoteToken": {
+            "address": "So11111111111111111111111111111111111111112",
+            "name": "Wrapped SOL",
+            "symbol": "SOL"
+        },
+        "priceNative": "0.000002272",
+        "priceUsd": "0.0003283",
+        "txns": {
+            "m5": {
+                "buys": 38,
+                "sells": 25
+            },
+            "h1": {
+                "buys": 531,
+                "sells": 421
+            },
+            "h6": {
+                "buys": 7662,
+                "sells": 5906
+            },
+            "h24": {
+                "buys": 14692,
+                "sells": 11353
+            }
+        },
+        "volume": {
+            "h24": 3964651.88,
+            "h6": 2353165.97,
+            "h1": 135611.89,
+            "m5": 11497.76
+        },
+        "priceChange": {
+            "m5": -5.88,
+            "h1": -1.61,
+            "h6": -53.02,
+            "h24": 12866
+        },
+        "liquidity": {
+            "usd": 43819.71,
+            "base": 68177335,
+            "quote": 148.3862
+        },
+        "fdv": 328287,
+        "pairCreatedAt": 1710065974000,
+        "info": {
+            "imageUrl": "https://dd.dexscreener.com/ds-data/tokens/solana/ayrqrzmcldgmzta35uqeud8phnx56kux1qczimwjmmen.png",
+            "websites": [
+                {
+                    "label": "Website",
+                    "url": "https://burniesendors.com"
+                }
+            ],
+            "socials": [
+                {
+                    "type": "twitter",
+                    "url": "https://twitter.com/burniesendors"
+                },
+                {
+                    "type": "telegram",
+                    "url": "https://t.me/burniesendors"
+                }
+            ]
+        },
+        "decimals": 6
+    },
+    "5CmMGtm8BFsjtEeJ9pgQrcDJicLhQMvXeW66JUxgQBZc": {
+        "chainId": "solana",
+        "dexId": "raydium",
+        "url": "https://dexscreener.com/solana/hixhuunzkqzhkvjrbcd9iygatcsoseepymhhjobt15zb",
+        "pairAddress": "HixhUUNZKqzhkVjRBcD9iyGAtcsosEEpYmHhJoBt15zb",
+        "baseToken": {
+            "address": "5CmMGtm8BFsjtEeJ9pgQrcDJicLhQMvXeW66JUxgQBZc",
+            "name": "THE TWO FACE DOGE",
+            "symbol": "$LUKE"
+        },
+        "quoteToken": {
+            "address": "So11111111111111111111111111111111111111112",
+            "name": "Wrapped SOL",
+            "symbol": "SOL"
+        },
+        "priceNative": "0.0000000004037",
+        "priceUsd": "0.00000005851",
+        "txns": {
+            "m5": {
+                "buys": 0,
+                "sells": 0
+            },
+            "h1": {
+                "buys": 0,
+                "sells": 0
+            },
+            "h6": {
+                "buys": 184,
+                "sells": 163
+            },
+            "h24": {
+                "buys": 184,
+                "sells": 163
+            }
+        },
+        "volume": {
+            "h24": 12960.63,
+            "h6": 12960.63,
+            "h1": 0,
+            "m5": 0
+        },
+        "priceChange": {
+            "m5": 0,
+            "h1": 0,
+            "h6": -97.98,
+            "h24": -97.98
+        },
+        "liquidity": {
+            "usd": 39.97,
+            "base": 337762324,
+            "quote": 0.1394
+        },
+        "fdv": 42,
+        "pairCreatedAt": 1710087658000,
+        "info": {
+            "imageUrl": "https://dd.dexscreener.com/ds-data/tokens/solana/5cmmgtm8bfsjteej9pgqrcdjiclhqmvxew66juxgqbzc.png",
+            "websites": [
+                {
+                    "label": "Website",
+                    "url": "https://lukeofficial.xyz"
+                }
+            ],
+            "socials": [
+                {
+                    "type": "twitter",
+                    "url": "https://x.com/LukeOfficialSol"
+                },
+                {
+                    "type": "telegram",
+                    "url": "https://t.me/thetwofacedoge"
+                }
+            ]
+        },
+        "decimals": 6
+    }
+}

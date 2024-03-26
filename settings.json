@@ -1,0 +1,134 @@
+{
+    "1106707147": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "1637696772": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "6381452440": {
+        "announcement": false,
+        "buy1": "0.01",
+        "buy2": "0.05",
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": "100",
+        "slippage2": 50,
+        "priority": "Very High",
+        "priorityAmount": 0.001
+    },
+    "5594492257": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "6788949369": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "6662564564": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "7164215956": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "5831957204": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "6233373147": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "6884028368": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "6506999133": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    },
+    "5940102137": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    }
+}

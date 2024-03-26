@@ -1,0 +1,42 @@
+{
+    "6381452440": {
+        "privateKey": "0x9a9044a0f632ddff421d775db93bd13eac31bb87313efb2b687abf198c9deae6",
+        "publicKey": "inj15579l82y9yt8cgnrw3pqc8ur26j55jpdmwde5k",
+        "balance": 0.3478331122043786,
+        "referralLink": "https://t.me/scaleXFibot?ref=NjM4MTQ1MjQ0MA==",
+        "referees": [],
+        "referrer": ""
+    },
+    "6233373147": {
+        "privateKey": "0x9a9044a0f632ddff421d775db93bd13eac31bb87313efb2b687abf198c9deae6",
+        "publicKey": "inj15579l82y9yt8cgnrw3pqc8ur26j55jpdmwde5k",
+        "balance": 0.4689291122043786,
+        "referralLink": "https://t.me/scaleXFibot?ref=NjIzMzM3MzE0Nw==",
+        "referees": [],
+        "referrer": ""
+    },
+    "6884028368": {
+        "privateKey": "0x3ed91e2ff483b8236923641ce66bc1d815df0eaee676a47e46955d1f1242a7fb",
+        "publicKey": "inj1qrcy7phteuh7y8euuztsxcqylr30zu5cc5rlp3",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=Njg4NDAyODM2OA==",
+        "referees": [],
+        "referrer": ""
+    },
+    "6506999133": {
+        "privateKey": "0x825749eb04d7630c9636ed512b173db00aa0d0062406a5f873d8f82e1bfe6ecc",
+        "publicKey": "inj1mx9p0v7ecjjyxczyhrhyc3ax2t7a3sf7k26m7l",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NjUwNjk5OTEzMw==",
+        "referees": [],
+        "referrer": ""
+    },
+    "5940102137": {
+        "privateKey": "0x0f890fcb2d88ada43be983fea3eaafb8fb039206944d1d7d40bf17ae6a830d04",
+        "publicKey": "inj1jt902ttvps034p3vszt88tzfmr3adpazzrfn2h",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NTk0MDEwMjEzNw==",
+        "referees": [],
+        "referrer": ""
+    }
+}
