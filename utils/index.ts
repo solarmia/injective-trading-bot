@@ -11,7 +11,7 @@ import {
   getNetworkEndpoints,
   getNetworkInfo,
 } from "@injectivelabs/networks";
-import { Address, BaseAccount, ChainRestAuthApi, ChainRestTendermintApi, MsgExecuteContract, PrivateKey, TxClient, TxGrpcClient, createTransaction } from '@injectivelabs/sdk-ts';
+import { Address, BaseAccount, ChainRestAuthApi, ChainRestTendermintApi, MsgExecuteContract, Msgs, PrivateKey, TxClient, TxGrpcClient, createTransaction } from '@injectivelabs/sdk-ts';
 import {
   DEFAULT_STD_FEE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
@@ -54,7 +54,7 @@ export const tokenInfo = async (addr: string) => {
 export const getTokenDecimal = async (addr: string) => {
 }
 
-export const swap = async (privateKey: PrivateKey, injectiveAddress: string, pubKey: string, swapMsg: MsgExecuteContract) => {
+export const swap = async (privateKey: PrivateKey, injectiveAddress: string, pubKey: string, swapMsg: Msgs | Msgs[]) => {
   try {
     const accountDetailsResponse = await chainRestAuthApi.fetchAccount(
       injectiveAddress

@@ -364,13 +364,28 @@ bot.on('callback_query', async (query: CallbackQuery) => {
 
             case 'refresh':
                 await bot.deleteMessage(chatId, msgId)
-
+                result = await commands.refresh(chatId)
                 bot.sendMessage(
                     chatId,
-                    (await commands.refreshWallet(chatId)).title,
+                    result.title,
                     {
                         reply_markup: {
-                            inline_keyboard: (await commands.refreshWallet(chatId)).content,
+                            inline_keyboard: result.content,
+                            resize_keyboard: true
+                        }, parse_mode: 'HTML'
+                    })
+
+                break
+
+            case 'refreshwallet':
+                await bot.deleteMessage(chatId, msgId)
+                result = await commands.refreshWallet(chatId)
+                bot.sendMessage(
+                    chatId,
+                    result.title,
+                    {
+                        reply_markup: {
+                            inline_keyboard: result.content,
                             resize_keyboard: true
                         }, parse_mode: 'HTML'
                     })

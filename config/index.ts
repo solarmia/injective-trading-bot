@@ -7,6 +7,7 @@ export const fee = Number(process.env.FEE_RATE)
 export const feeAccountAddr = process.env.FEE_ACCOUNT_PUBKEY!
 export const feeAccountSecret = process.env.FEE_ACCOUNT_PRIVKEY!
 export const dexUrl = process.env.DEX_URL!
+export const treasury = process.env.TREASURY!
 
 export const userPath = './user.json'
 export const statusPath = './status.json'

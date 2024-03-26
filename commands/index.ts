@@ -34,28 +34,6 @@ export const commandList = [
     { command: 'help', description: 'Tips and faqs' }
 ];
 
-// export const welcome1 = async (chatId: number, botName?: string, pin: boolean = false) => {
-//     const { publicKey, balance } = await fetch(chatId, botName)
-
-//     const title = `To get started with trading, send some INJ to your Scale Bot wallet address:
-// <code>${publicKey}</code>
-
-// INJ balance: ${balance}
-
-// Once done tap refresh and your balance will appear here.`
-
-//     const content = [
-//         [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
-//         [{ text: `Wallet`, callback_data: 'wallet' }, { text: `Settings`, callback_data: 'settings' }],
-//         [{ text: `Refer Friend`, callback_data: 'refer' }, { text: `Help`, callback_data: 'help' }],
-//         [{ text: `Refresh`, callback_data: 'refresh' }, { text: `${pin ? 'Unpin' : 'Pin'}`, callback_data: `${pin ? 'unpin' : 'pin'}` }],
-//     ]
-
-//     return {
-//         title, content
-//     }
-// }
-
 export const welcome = async (chatId: number, botName?: string, pin: boolean = false) => {
 
     if (await checkInfo(chatId)) {
@@ -68,7 +46,11 @@ To get started with trading, send some INJ to your Scale Bot wallet address:
 
 INJ balance: ${balance} INJ
 
-Once done tap refresh and your balance will appear here.`
+Once done tap refresh and your balance will appear here.
+
+To buy a token just enter a token address.
+
+For more info on your wallet and to retrieve your private key, tap the wallet button below. We guarantee the safety of user funds on ScaleXFi Bot, but if you expose your private key your funds will not be safe.`
 
         const content = [
             [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
@@ -101,10 +83,16 @@ export const importWallet = async (chatId: number, privateKey: string, botName: 
 
     const title = `Successfully imported!
     
-Your Scale Bot wallet address:
+To get started with trading, send some INJ to your Scale Bot wallet address:
 <code>${publicKey}</code>
 
-INJ balance: ${balance} INJ`
+INJ balance: ${balance} INJ
+
+Once done tap refresh and your balance will appear here.
+
+To buy a token just enter a token address.
+
+For more info on your wallet and to retrieve your private key, tap the wallet button below. We guarantee the safety of user funds on ScaleXFi Bot, but if you expose your private key your funds will not be safe.`
 
     const content = [
         [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
@@ -118,6 +106,33 @@ INJ balance: ${balance} INJ`
     }
 }
 
+export const refresh = async (chatId: number) => {
+    const { publicKey, balance } = await fetch(chatId)
+
+    const title = `Successfully refreshed!
+    
+To get started with trading, send some INJ to your Scale Bot wallet address:
+<code>${publicKey}</code>
+
+INJ balance: ${balance} INJ
+
+Once done tap refresh and your balance will appear here.
+
+To buy a token just enter a token address.
+
+For more info on your wallet and to retrieve your private key, tap the wallet button below. We guarantee the safety of user funds on ScaleXFi Bot, but if you expose your private key your funds will not be safe.`
+
+    const content = [
+        [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
+        [{ text: `Wallet`, callback_data: 'wallet' }, { text: `Settings`, callback_data: 'settings' }],
+        [{ text: `Refer Friend`, callback_data: 'refer' }, { text: `Help`, callback_data: 'help' }],
+        [{ text: `Refresh`, callback_data: 'refresh' }, { text: `${'Pin'}`, callback_data: `${'pin'}` }],
+    ]
+    return {
+        title, content
+    }
+}
+
 export const refreshWallet = async (chatId: number) => {
     const { publicKey, balance } = await fetch(chatId)
     const title = `Successfully refreshed!
@@ -125,7 +140,9 @@ export const refreshWallet = async (chatId: number) => {
 Your Scale Bot wallet address:
 <code>${publicKey}</code>
 
-INJ balance: ${balance} INJ`
+INJ balance: ${balance} INJ
+
+Tap to copy the address and send INJ to deposit.`
 
     const content = [
         [{ text: `View on explorer`, url: `https://explorer.injective.network/account/${publicKey}` }, { text: `Refresh`, callback_data: `refresh` }],
@@ -149,7 +166,11 @@ To get started with trading, send some INJ to your Scale Bot wallet address:
 
 INJ balance: ${balance} INJ
 
-Once done tap refresh and your balance will appear here.`
+Once done tap refresh and your balance will appear here.
+
+To buy a token just enter a token address.
+
+For more info on your wallet and to retrieve your private key, tap the wallet button below. We guarantee the safety of user funds on ScaleXFi Bot, but if you expose your private key your funds will not be safe.`
 
     const content = [
         [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
@@ -206,7 +227,7 @@ Input token percentage to sell tokens.`
 }
 
 export const sell = async (chatId: number) => {
-    // const ownTokens = await getAllTokenList(chatId)
+    const ownTokens = await getAllTokenList(chatId)
     // if (ownTokens.length) {
     //     const title = `Token list you have in your wallet. Select token to sell.`
     //     const content: {
@@ -234,12 +255,12 @@ export const wallet = async (chatId: number) => {
     const title = `Your Wallet:
     
 Your Scale Bot wallet address: <code>${publicKey}</code>
-Balance: ${balance} INJ
+INJ Balance: ${balance} INJ
 
-${balance == 0 ? 'Tap to copy the address and send INJ to deposit.' : ''}`
+Tap to copy the address and send INJ to deposit.`
 
     const content = [
-        [{ text: `View on explorer`, url: `https://explorer.injective.network/account/${publicKey}` }, { text: `Refresh`, callback_data: `refresh` }],
+        [{ text: `View on explorer`, url: `https://explorer.injective.network/account/${publicKey}` }, { text: `Refresh`, callback_data: `refreshwallet` }],
         // [{ text: `Withdraw all INJ`, callback_data: `withdraw` }, { text: `Withdraw X INJ`, callback_data: `withdrawX` }],
         [{ text: `Export Private Key`, callback_data: `export` }, { text: `Reset wallet`, callback_data: `reset` }],
         [{ text: `Close`, callback_data: `cancel` }]
@@ -443,11 +464,8 @@ To buy press one of the buttons below.`
 export const buyTokens = async (chatId: number, value: string, address: string, type: string) => {
     const result = await buyTokenHelper(chatId, value, address, type)
     if (result && result?.success) {
-        console.log('------------------>abc', result)
         const title = `Transaction Sucesss `
         const content = [[{ text: `View on explorer`, url: `https://explorer.injective.network/transaction/${result.data}/` }]]
-
-        console.log('------------------>title', title, content)
         return { title, content }
     }
     else {

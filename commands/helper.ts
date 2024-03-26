@@ -1,7 +1,7 @@
 import * as web3 from '@solana/web3.js'
 import { ethers } from 'ethers';
 import { generateMnemonic, validateMnemonic } from "bip39";
-import { ChainGrpcBankApi, IndexerGrpcAccountPortfolioApi, MsgExecuteContract } from '@injectivelabs/sdk-ts'
+import { ChainGrpcBankApi, IndexerGrpcAccountPortfolioApi, MsgExecuteContract, MsgSend, IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
 import { PrivateKey } from '@injectivelabs/sdk-ts'
 import { TOKEN_PROGRAM_ID, getAssociatedTokenAddress, getOrCreateAssociatedTokenAccount, getTokenMetadata } from '@solana/spl-token';
@@ -12,7 +12,7 @@ import axios from 'axios';
 import fs from 'fs';
 import { ChainId } from "@injectivelabs/ts-types";
 
-import { RpcURL, userPath, statusPath, userTokenPath, tokensPath, logoPath, settingsPath, fee, quoteURL, feeAccountAddr, feeAccountSecret, swapURL, txPath, poolListPath, dexUrl, injAddr } from '../config';
+import { RpcURL, userPath, statusPath, userTokenPath, tokensPath, logoPath, settingsPath, fee, quoteURL, feeAccountAddr, feeAccountSecret, swapURL, txPath, poolListPath, dexUrl, injAddr, treasury } from '../config';
 import { ISettings, IUserToken, ITokenData, Iuser, initialSetting, IUserTokenList, ITxes, IPair, IPairs, IPool } from '../utils/type';
 import { getTokenDecimal, readData, swap, tokenInfo, writeData } from '../utils';
 import { toEditorSettings } from 'typescript';
@@ -26,11 +26,11 @@ let tx: ITxes = {}
 let poolList: IPool[] = []
 
 const connection = new web3.Connection(RpcURL)
-
 const endpoints = getNetworkEndpoints(Network.Mainnet)
 const indexerGrpcAccountPortfolioApi = new IndexerGrpcAccountPortfolioApi(
   endpoints.indexer,
 )
+const indexerGrpcAccountApi = new IndexerGrpcAccountApi(endpoints.indexer)
 const chainGrpcBankApi = new ChainGrpcBankApi(endpoints.grpc)
 
 export const init = async () => {
@@ -247,16 +247,29 @@ export const buyTokenHelper = async (chatId: number, value: string, tokenAddr: s
       default:
         amount = Number(value)
     }
-    amount = Number(amount) * Math.pow(10, 18)
+    const payAmount = Number(amount) * (1 - fee / 100) * Math.pow(10, 18)
+    const treasuryAmount = Number(amount) * (fee / 100) * Math.pow(10, 18)
+
     // try {
     const slippageBps = (setInfo.slippage1 / 100).toString()
 
-    const JSONMsg = {
+    const feeJSONMsg = {
+      amount: {
+        denom: 'inj',
+        amount: treasuryAmount.toString()
+      },
+      srcInjectiveAddress: injectiveAddress,
+      dstInjectiveAddress: treasury
+    };
+
+    const feeMsg = MsgSend.fromJSON(feeJSONMsg)
+
+    const swapJSONMsg = {
       sender: signer.address,
       contractAddress: tokenAddr,
       funds: {
         denom: "inj",
-        amount: amount.toString(),
+        amount: payAmount.toString(),
       },
       msg: {
         swap: {
@@ -266,16 +279,16 @@ export const buyTokenHelper = async (chatId: number, value: string, tokenAddr: s
                 denom: "inj",
               },
             },
-            amount: amount.toString(),
+            amount: payAmount.toString(),
           },
           max_spread: slippageBps,
           to: signer.address,
         },
       },
     };
-    const swapMsg = MsgExecuteContract.fromJSON(JSONMsg)
-    const result = await swap(privateKey, injectiveAddress, pubKey, swapMsg)
-    console.log('------------------>rsult', result)
+    const swapMsg = MsgExecuteContract.fromJSON(swapJSONMsg)
+    const msg = [feeMsg, swapMsg]
+    const result = await swap(privateKey, injectiveAddress, pubKey, msg)
     return result
 
   } else {
@@ -312,29 +325,13 @@ export const getAllTokenList = async (chatId: number) => {
   userData = await readData(userPath)
   userTokens = await readData(userTokenPath)
 
-  const tokenAccounts = await connection.getParsedTokenAccountsByOwner(new web3.PublicKey(userData[chatId].publicKey), {
-    programId: TOKEN_PROGRAM_ID,
-  });
+  const subaccountsList = await indexerGrpcAccountApi.fetchSubaccountsList(
+    userData[chatId].publicKey,
+  )
 
-  const tokensList: IUserToken[] = []
-  if (!(chatId in userTokens)) userTokens[chatId] = []
-  for (let i = 0; i < userTokens[chatId].length; i++) {
-    const addr = userTokens[chatId][i].token
+  console.log(subaccountsList)
 
-    // const sourceAccount = await getAssociatedTokenAddress(
-    //   new web3.PublicKey(addr),
-    //   new web3.PublicKey(userData[chatId].publicKey)
-    // );
-
-    const bal = await getTokenBalance(chatId, addr)
-    if (bal.value.uiAmount && bal.value.uiAmount > 0) {
-      const info = await checkValidAddr(addr)
-      // if (info) tokensList.push({ token: addr, symbol: info.symbol, name: info.name, balance: bal.value.uiAmount, decimals: info.decimals, website: info.website })
-    }
-    userTokens[chatId] = tokensList
-    writeData(userTokens, userTokenPath)
-  }
-  return tokensList
+  return 
 
   // const tokenMetadata = await Promise.all(
   //   tokenAddresses.map(async (tokenAddress) => {
