@@ -513,18 +513,27 @@ export const invalid = (type: string) => {
 
 export const help = () => {
     const title = `Which tokens can I trade?
-Any SPL token that is a INJ pair, on Raydium, Orca, and Jupiter. We pick up pairs instantly, and swap token in 1 only min.
+
+Any CW20 token that is a INJ pair on Dojoswap . We pick up pairs instantly, and swap token in 1 only min.
 
 How can I see how much money I've made from referrals?
+
 Check the referrals button or type /referrals to see your payment in Scale world !
 
-I want to create a new wallet on Scale Bot.
+How can I create a new wallet on Scale Bot?
+
 Click the Wallet button or type /wallet, and you will be able to configure your new wallets
 
+Can I import my previously created Injective wallet?
+
+Yes, you can import your any Injective wallet which you have created previously.
+
 Is Scale Bot free? How much do i pay for transactions?
-Scale Bot is absolutely free! We charge 1% on transactions, and keep the bot free so that anyone can use it. 
+
+Scale Bot is absolutely free! will be always. We charge only 1% on transactions, and keep the bot free so that everyone can use it.
 
 How does Scale Bot gurantee transaction success rate?
+
 Scale Bot provides best service for transaction.
 And you can also pay addtional fee for transaction.
 You can set this amount in settings button or /settings.
@@ -532,9 +541,12 @@ You can set this amount in settings button or /settings.
 Why is  Profit Lower Than Expectation?
 Your Net Profit is calculated after deducting all associated costs, including Price Impact, Transfer Tax, Dex Fees, and a 1% Scale Bot fee. This ensures the figure you see is what you actually receive, accounting for all transaction-related expenses.
 
-Is there a difference between @Scale Bot and other bots?
-No, they are all the same bot and you can use them interchangeably. 
-And Scale Bot has also the feature of addtional fee for increasing transaction priority.`
+Is there a difference between <a href="https://t.me/scaleXFibot">@Scale Bot</a> and other bots?
+Yes, Scale bot is way faster than any other trading bots built on Injective ecosystem and comes with lots of new features like:
+- Refer to earn
+- Weekly leaderboard
+- rewards for top traders
+- Wallet import`
     return title
 }
 

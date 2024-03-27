@@ -40,7 +40,7 @@ bot.on(`message`, async (msg) => {
                         result
                     )
                     bot.once(`message`, async (msg) => {
-                        if (msg.text == 'no') {
+                        if (msg.text == 'no' || msg.text == 'No' || msg.text == 'NO' || msg.text == 'n'|| msg.text == 'N') {
                             await bot.deleteMessage(chatId, msg.message_id)
                             result = await commands.welcome(chatId, botName)
                             await bot.sendMessage(

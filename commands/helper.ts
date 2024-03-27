@@ -569,7 +569,7 @@ export const placeLimitOrder = () => {
 export const checkPossibleOrder = async (data: IPOrder) => {
   const address = data.address
   const price = data.price
-
+  
 }
 
 

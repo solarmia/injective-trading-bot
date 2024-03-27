@@ -1,4 +1,108 @@
 {
+    "357268405": {
+        "privateKey": "",
+        "publicKey": "",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=MzU3MjY4NDA1",
+        "referees": [],
+        "referrer": "439537982",
+        "buy": 0,
+        "sell": 0
+    },
+    "418298582": {
+        "privateKey": "0x0ad84c32785c378d9511d7b0b4d44e09dbc73135bb583e8dc84680bd7c10d07b",
+        "publicKey": "inj1q0ywgz34v4242e2fmvwjp7u527a8e6xkleudvz",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NDE4Mjk4NTgy",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "439537982": {
+        "privateKey": "0xaa52e9a2c72f4e8007d191148701ab72fdecfb526104067a343369439aa568f0",
+        "publicKey": "inj15ymsufhygu2ta3p3ln0wnfalthsnuxy9mfgml5",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NDM5NTM3OTgy",
+        "referees": [
+            "357268405"
+        ],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "1154315093": {
+        "privateKey": "0x44245de7ea08efc626e9ce7a6c6750aa5772db080cb7b24b284a0b25f816c89a",
+        "publicKey": "inj1e7jvn0teu8fw2p8j8u4np2hfct0sc39dnkze3g",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=MTE1NDMxNTA5Mw==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "1329250975": {
+        "privateKey": "0x68116d10e7252aa0581fe11eb53c75e89e06088af4bcf800e5b761888103c121",
+        "publicKey": "inj1re98gv94truekzgnxk2phl7sxd592smvjwu54a",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=MTMyOTI1MDk3NQ==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "1411587170": {
+        "privateKey": "0xac173318d20bbe2ccec0abf8f62e4ff9481f9036b0487cfb29a15c8f057061ad",
+        "publicKey": "inj1mup2vqjcc47ydp7axz4jrc660ajnzekykj20p2",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=MTQxMTU4NzE3MA==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "1749228295": {
+        "privateKey": "0xbf9853881a4adc53689ab21b683b5762356f68a5598b7a978776a587cfc924b7",
+        "publicKey": "inj1fpz7puja45t2jrz5c443t72frgqs6ttumzsm22",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=MTc0OTIyODI5NQ==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "1814620016": {
+        "privateKey": "0x1255c9d879ed30e0b4768e1930ee03f9220bd2210f3f0194cc4a72d0448c55c2",
+        "publicKey": "inj128rc5gkfdent20preprp7yu9yq5xuuuzrk5r0k",
+        "balance": 0.000021184,
+        "referralLink": "https://t.me/scaleXFibot?ref=MTgxNDYyMDAxNg==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "1862747010": {
+        "privateKey": "0x169fe8507835c4a761908519e22c3821036efca7b4e50f7136b1e8fbf8472e86",
+        "publicKey": "inj1q8ey0her7xkxqhfhj2uade8w8gfpha655r6jae",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=MTg2Mjc0NzAxMA==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "1864818471": {
+        "privateKey": "0x918758762ca393026ca7c6526efbd6c23b31ede37a0e31e2f28a93852d61e859",
+        "publicKey": "inj1xm3a2dsuktxa6q79qxjuhttqjk9kfkjhmqjjut",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=MTg2NDgxODQ3MQ==",
+        "referees": [
+            "1411587170"
+        ],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
     "6381452440": {
         "privateKey": "0x9a9044a0f632ddff421d775db93bd13eac31bb87313efb2b687abf198c9deae6",
         "publicKey": "inj15579l82y9yt8cgnrw3pqc8ur26j55jpdmwde5k",
@@ -22,11 +126,15 @@
     "6884028368": {
         "privateKey": "0x3ed91e2ff483b8236923641ce66bc1d815df0eaee676a47e46955d1f1242a7fb",
         "publicKey": "inj1qrcy7phteuh7y8euuztsxcqylr30zu5cc5rlp3",
-        "balance": 0.608976,
+        "balance": 1.0267783139309843,
         "referralLink": "https://t.me/scaleXFibot?ref=Njg4NDAyODM2OA==",
-        "referees": [],
+        "referees": [
+            "6703500327",
+            "1814620016"
+        ],
         "referrer": "",
-        "buy": 336600000000000000
+        "buy": 336600000000000000,
+        "sell": 387168186097893400
     },
     "6506999133": {
         "privateKey": "0x825749eb04d7630c9636ed512b173db00aa0d0062406a5f873d8f82e1bfe6ecc",
@@ -43,6 +151,66 @@
         "referralLink": "https://t.me/scaleXFibot?ref=NjcxNTA4MzA4NA==",
         "referees": [],
         "referrer": "6381452440",
+        "buy": 0,
+        "sell": 0
+    },
+    "6703500327": {
+        "privateKey": "",
+        "publicKey": "",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NjcwMzUwMDMyNw==",
+        "referees": [],
+        "referrer": "6884028368",
+        "buy": 0,
+        "sell": 0
+    },
+    "5725036695": {
+        "privateKey": "0x7ab63b07decbd9dfa139a530e078b8167d5ffb185eedadcaf61a5c61dec9efa4",
+        "publicKey": "inj1crlxkfek8h9385x2c0jczcnz7xpg8xnd29p984",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NTcyNTAzNjY5NQ==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "6571161407": {
+        "privateKey": "0x9831d4e59f20bd82b15121821a46dc989c880d536d0de6b81188ed136c02034b",
+        "publicKey": "inj1x3rhpa739ayhg2ktnazpj8hft2jmer8g0265l4",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NjU3MTE2MTQwNw==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "5810650745": {
+        "privateKey": "0xf8e903d8c10e5e1ff52aacb82fcccbb45abc41b9ab0a06ee33d187ba8e5fa5b8",
+        "publicKey": "inj1km2hkfq49s4nwhk7mwcnrt8snkkpelaux8wxne",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NTgxMDY1MDc0NQ==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "5545702768": {
+        "privateKey": "0x39f742cf007ccd4706d97958682e28cc7f10fe9f3423e65b24952bfe1e5f76ac",
+        "publicKey": "inj1gc322vmudwpx6uwfp5t6w0ar05dhzxmcwdzkn5",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NTU0NTcwMjc2OA==",
+        "referees": [],
+        "referrer": "",
+        "buy": 0,
+        "sell": 0
+    },
+    "6164734701": {
+        "privateKey": "0xcbf47a7a140bde71e2e99ffc7d8b4a18e6ef059db94ce07746c6280e14b52281",
+        "publicKey": "inj1pmnpztau5fwyh9zh8eaheejl3e50zxk48trmy8",
+        "balance": 0,
+        "referralLink": "https://t.me/scaleXFibot?ref=NjE2NDczNDcwMQ==",
+        "referees": [],
+        "referrer": "",
         "buy": 0,
         "sell": 0
     }
