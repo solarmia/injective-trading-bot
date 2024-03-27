@@ -12,6 +12,7 @@ export const treasury = process.env.TREASURY!
 export const userPath = './user.json'
 export const settingsPath = './settings.json'
 export const rankPath = './rank.json'
+export const orderPath = './order.json'
 export const injAddr = 'inj'
 export const dojoPairUrl = 'https://dojo.trading/pairs'
 export const injExplorer = 'https://explorer.injective.network'

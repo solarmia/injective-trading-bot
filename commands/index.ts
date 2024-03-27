@@ -1,6 +1,6 @@
 import { dojoPairUrl, injExplorer } from '../config';
 import { errorTitle } from '../utils/type';
-import { swapTokenHelper, checkInfo, createWalletHelper, fetch, getAllTokenList, getSetting, getTokenInfoHelper, getTopTradersHelper, importWalletHelper, setSettings } from './helper'
+import { swapTokenHelper, checkInfo, createWalletHelper, fetch,  getSetting, getTokenInfoHelper, getTopTradersHelper, importWalletHelper, setSettings, validReferalLink, getAllTokenList } from './helper'
 
 interface IConfirm {
     [key: string]: {
@@ -27,11 +27,11 @@ const confirmList: IConfirm =
 
 export const commandList = [
     { command: 'start', description: 'Start the bot' },
-    { command: 'settings', description: 'Show the settings menu' },
-    { command: 'wallet', description: 'View wallet info' },
     { command: 'buy', description: 'Buy tokens' },
     { command: 'sell', description: 'Sell your token' },
+    { command: 'wallet', description: 'View wallet info' },
     { command: 'leaderboard', description: 'Show 5 top traders ranking' },
+    { command: 'settings', description: 'Show the settings menu' },
     { command: 'referral', description: 'Refer your friend' },
     { command: 'help', description: 'Tips and faqs' }
 ];
@@ -43,6 +43,20 @@ const mainContent = (pin: boolean = false) => [
     [{ text: `Refresh`, callback_data: 'refresh' }, { text: `Leader Board`, callback_data: 'leaderboard' }],
     [{ text: `${pin ? 'Unpin' : 'Pin'}`, callback_data: `${pin ? 'unpin' : 'pin'}` }],
 ]
+
+export const referralCheck = async (chatId: number) => {
+    if (!(await checkInfo(chatId))) {
+        const title = 'Did you receive a referral link? If yes, please input referral link.\nIf no, please input no.'
+        return title
+    }
+    return undefined
+}
+
+export const addreferral = async (chatId: number, referralLink: string, botName: string) => {
+    const validation = await validReferalLink(referralLink, botName, chatId)
+    if (validation) return { data: 'Successfully added referral link', flag: true }
+    return { data: 'Invalid referral link', flag: false }
+}
 
 export const welcome = async (chatId: number, botName?: string, pin: boolean = false) => {
 
@@ -218,26 +232,26 @@ Input token percentage to sell tokens.`
 
 export const sell = async (chatId: number) => {
     const ownTokens = await getAllTokenList(chatId)
-    // if (ownTokens.length) {
-    //     const title = `Token list you have in your wallet. Select token to sell.`
-    //     const content: {
-    //         text: string;
-    //         callback_data: string;
-    //     }[][] = []
-    //     ownTokens.map((val: any) => {
-    //         content.push([{ text: `Token: ${val.symbol} Balance: ${val.balance}`, callback_data: `sell:${val.token}` }])
-    //     })
-    //     content.push([{ text: `Close`, callback_data: `cancel` }])
-    //     return {
-    //         title, content
-    //     }
-    // } else {
-    const title = `You have no tokens in your wallet.`
-    const content = [[{ text: `Close`, callback_data: `cancel` }]]
-    return {
-        title, content
+    if (ownTokens.length) {
+        const title = `Token list you have in your wallet. Select token to sell.`
+        const content: {
+            text: string;
+            callback_data: string;
+        }[][] = []
+        ownTokens.map((val: any) => {
+            content.push([{ text: `Token: ${val.token.symbol}   Balance: ${val.balance / Math.pow(10, val.token.decimals)}`, callback_data: `sell:${val.contractAddress}` }])
+        })
+        content.push([{ text: `Close`, callback_data: `cancel` }])
+        return {
+            title, content
+        }
+    } else {
+        const title = `You have no tokens in your wallet.`
+        const content = [[{ text: `Close`, callback_data: `cancel` }]]
+        return {
+            title, content
+        }
     }
-    // }
 }
 
 export const wallet = async (chatId: number) => {
@@ -289,12 +303,14 @@ Delete this message once you are done.`
 }
 
 export const refer = async (chatId: number) => {
-    const { referralLink } = await fetch(chatId)
+    const { referralLink, referees, referrer } = await fetch(chatId)
     const title = `Referral Link: 
 <code>${referralLink}</code>
 
-Referrals: 0
-You can get reward if you refer someone`
+Referrals counts: ${referees.length}
+You can get reward if you refer someone
+
+${referrer ? "You have been referred" : ""}`
 
     const content = [
         [{ text: `Close`, callback_data: `cancel` }]
@@ -415,6 +431,7 @@ To buy press one of the buttons below.`
                     [{ text: `Buy ${buy1} INJ`, callback_data: `buyS:${result.pairAddress}` }, {
                         text: `Buy ${buy2} INJ`, callback_data: `buyL:${result.pairAddress}`
                     }, { text: `Buy X INJ`, callback_data: `buyX:${result.pairAddress}` }],
+                    [{ text: `Limit Order`, callback_data: `limit:${address}` }],
                     [{ text: `Close`, callback_data: `cancel` }]
                 ]
                 return { caption, content }
@@ -426,15 +443,15 @@ Price: $${result.price}
 Market Cap: $${result.fdv}
 
 Wallet Balance: ${result.balance} INJ
-To buy press one of the buttons below.`
+To sell press one of the buttons below.`
 
                 const { sell1, sell2 } = await getSetting(chatId)
 
                 const content = [
                     [{ text: `Token Explorer`, url: `${injExplorer}/account/${address}` }, { text: `Pair Explorer`, url: `${dojoPairUrl}/${result.pairAddress}` }],
-                    [{ text: `Sell ${sell1} %`, callback_data: `sellS:${result.pairAddress}` }, {
-                        text: `Sell ${sell2} %`, callback_data: `sellL:${result.pairAddress}`
-                    }, { text: `Sell X %`, callback_data: `sellX:${result.pairAddress}` }],
+                    [{ text: `Sell ${sell1} %`, callback_data: `sellS:${address}` }, {
+                        text: `Sell ${sell2} %`, callback_data: `sellL:${address}`
+                    }, { text: `Sell X %`, callback_data: `sellX:${address}` }],
                     [{ text: `Close`, callback_data: `cancel` }]
                 ]
                 return { caption, content }

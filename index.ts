@@ -3,7 +3,7 @@ import TelegramBot, { CallbackQuery } from 'node-telegram-bot-api';
 
 import * as commands from './commands'
 import { BotToken } from "./config";
-import { init } from "./commands/helper";
+import { addPlaceOrder, init } from "./commands/helper";
 
 const token = BotToken
 const bot = new TelegramBot(token!, { polling: true });
@@ -11,6 +11,7 @@ let botName: string
 let editText: string
 
 console.log("Bot started");
+// getTokenPrice('inj15579l82y9yt8cgnrw3pqc8ur26j55jpdmwde5k', 'inj1l49685vnk88zfw2egf6v65se7trw2497wsqk65')
 
 bot.getMe().then(user => {
     botName = user.username!.toString()
@@ -32,17 +33,63 @@ bot.on(`message`, async (msg) => {
         switch (text) {
             case `/start`:
                 await bot.deleteMessage(chatId, msgId)
-                result = await commands.welcome(chatId, botName)
-                await bot.sendMessage(
-                    chatId,
-                    result.title,
-                    {
-                        reply_markup: {
-                            inline_keyboard: result.content,
-                            resize_keyboard: true
-                        }, parse_mode: 'HTML'
-                    }
-                )
+                result = await commands.referralCheck(chatId)
+                if (result) {
+                    await bot.sendMessage(
+                        chatId,
+                        result
+                    )
+                    bot.once(`message`, async (msg) => {
+                        if (msg.text == 'no') {
+                            await bot.deleteMessage(chatId, msg.message_id)
+                            result = await commands.welcome(chatId, botName)
+                            await bot.sendMessage(
+                                chatId,
+                                result.title,
+                                {
+                                    reply_markup: {
+                                        inline_keyboard: result.content,
+                                        resize_keyboard: true
+                                    }, parse_mode: 'HTML'
+                                }
+                            )
+                        } else if (msg.text) {
+                            const refResult = await commands.addreferral(chatId, msg.text, botName)
+                            if (refResult.flag) {
+                                result = await commands.welcome(chatId, botName)
+                                await bot.sendMessage(
+                                    chatId,
+                                    result.title,
+                                    {
+                                        reply_markup: {
+                                            inline_keyboard: result.content,
+                                            resize_keyboard: true
+                                        }, parse_mode: 'HTML'
+                                    }
+                                )
+                            } else {
+                                await bot.sendMessage(
+                                    chatId,
+                                    "Invalid referral link"
+                                )
+                            }
+                        }
+                        return
+                    })
+                } else {
+                    result = await commands.welcome(chatId, botName)
+                    await bot.sendMessage(
+                        chatId,
+                        result.title,
+                        {
+                            reply_markup: {
+                                inline_keyboard: result.content,
+                                resize_keyboard: true
+                            }, parse_mode: 'HTML'
+                        }
+                    )
+
+                }
                 break;
 
             case `/settings`:
@@ -599,39 +646,78 @@ bot.on('callback_query', async (query: CallbackQuery) => {
                     }
                     const txConfirm = await bot.sendMessage(chatId, 'Transaction sent. Confirming now...')
                     const tx = await commands.swapTokens(chatId, msg.text!, address, 'sell')
-                    // if (tx['error']) {
-                    //     await bot.deleteMessage(chatId, txConfirm.message_id)
-                    //     if (tx.signature) await bot.sendMessage(
-                    //         chatId,
-                    //         `Error : ${tx.error}`, {
-                    //         reply_markup: {
-                    //             inline_keyboard: [[{ text: `Transaction Link`, url: tx.signature }]],
-                    //             resize_keyboard: true
-                    //         }, parse_mode: 'HTML'
-                    //     })
-                    //     else await bot.sendMessage(
-                    //         chatId,
-                    //         `Error : ${tx.error}`)
-                    // }
+                    bot.deleteMessage(chatId, txConfirm.message_id)
+                    bot.sendMessage(chatId,
+                        tx.title, {
+                        reply_markup: {
+                            inline_keyboard: tx.content,
+                            resize_keyboard: true
+                        }, parse_mode: 'HTML'
+                    }
+                    )
                 })
             } else {
                 const txConfirm = await bot.sendMessage(chatId, 'Transaction sent. Confirming now...')
                 const tx = await commands.swapTokens(chatId, method, address, 'sell')
-                // if (tx['error']) {
-                //     await bot.deleteMessage(chatId, txConfirm.message_id)
-                //     if (tx.signature) await bot.sendMessage(
-                //         chatId,
-                //         `Error : ${tx.error}`, {
-                //         reply_markup: {
-                //             inline_keyboard: [[{ text: `Transaction Link`, url: tx.signature }]],
-                //             resize_keyboard: true
-                //         }, parse_mode: 'HTML'
-                //     })
-                //     else await bot.sendMessage(
-                //         chatId,
-                //         `Error : ${tx.error}`)
-                // }
+                bot.deleteMessage(chatId, txConfirm.message_id)
+                bot.sendMessage(chatId,
+                    tx.title, {
+                    reply_markup: {
+                        inline_keyboard: tx.content,
+                        resize_keyboard: true
+                    }, parse_mode: 'HTML'
+                }
+                )
             }
+        } else if (action.startsWith('limit')) {
+            const address = action.split(':')[1]
+            await bot.sendMessage(
+                chatId,
+                'Please input token price as USD'
+            )
+            let price: number = 0
+            bot.once('message', async (msg) => {
+                if (isNaN(Number(msg.text)) || !Number(msg.text)) {
+                    const issue = commands.invalid('inputTokenPrice')
+                    await bot.sendMessage(chatId, issue.title, {
+                        reply_markup: {
+                            inline_keyboard: issue.content,
+                            resize_keyboard: true
+                        }, parse_mode: 'HTML'
+                    })
+                    return
+                } else {
+                    price = Number(msg.text)
+                    await bot.sendMessage(
+                        chatId,
+                        'Please input INJ amount to buy'
+                    )
+                    let amount: number = 0
+                    bot.once('message', async (msg) => {
+                        if (isNaN(Number(msg.text)) || !Number(msg.text)) {
+                            const issue = commands.invalid('inputTokenAmount')
+                            await bot.sendMessage(chatId, issue.title, {
+                                reply_markup: {
+                                    inline_keyboard: issue.content,
+                                    resize_keyboard: true
+                                }, parse_mode: 'HTML'
+                            })
+                            return
+                        } else {
+                            amount = Number(msg.text)
+                            const flag = await addPlaceOrder(chatId, price, amount, address)
+                            if (flag) await bot.sendMessage(
+                                chatId,
+                                'Successfully ordered'
+                            )
+                            else await bot.sendMessage(
+                                chatId,
+                                'Ordered failed, Try again'
+                            )
+                        }
+                    })
+                }
+            })
         }
 
     } catch (e) {

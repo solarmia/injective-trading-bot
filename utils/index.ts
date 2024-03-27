@@ -8,12 +8,13 @@ import {
   getNetworkEndpoints,
   getNetworkInfo,
 } from "@injectivelabs/networks";
-import { BaseAccount, ChainRestAuthApi, ChainRestTendermintApi, Msgs, PrivateKey, TxGrpcClient, createTransaction } from '@injectivelabs/sdk-ts';
+import { BaseAccount, ChainRestAuthApi, ChainRestTendermintApi, IndexerGrpcAccountPortfolioApi, IndexerGrpcOracleApi, IndexerRestExplorerApi, Msgs, PrivateKey, TxGrpcClient, createTransaction } from '@injectivelabs/sdk-ts';
 import {
   DEFAULT_STD_FEE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   BigNumberInBase,
 } from "@injectivelabs/utils";
+import { IPOrder } from './type';
 
 const chainId = ChainId.Mainnet; /* ChainId.Mainnet */
 const restEndpoint = getNetworkEndpoints(Network.Mainnet).rest;
@@ -63,7 +64,7 @@ export const swap = async (privateKey: PrivateKey, injectiveAddress: string, pub
     const { txRaw, signBytes } = createTransaction({
       pubKey,
       chainId,
-      fee: DEFAULT_STD_FEE,
+      fee: { ...DEFAULT_STD_FEE },
       message: swapMsg,
       sequence: baseAccount.sequence,
       timeoutHeight: timeoutHeight.toNumber(),

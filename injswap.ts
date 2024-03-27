@@ -14,6 +14,7 @@ import {
   msgsOrMsgExecMsgs,
   toBase64,
   IndexerRestExplorerApi,
+  ChainGrpcBankApi,
 } from "@injectivelabs/sdk-ts";
 import {
   TokenInfo,
@@ -26,15 +27,14 @@ import {
   formatWalletAddress,
 } from "@injectivelabs/utils";
 import {
-  ChainId, TokenBalance,
-  ChainRest,
-  QueryClient, Token
+  ChainId
 } from "@injectivelabs/ts-types";
 import {
   Network,
   getNetworkEndpoints,
   getNetworkInfo,
 } from "@injectivelabs/networks";
+import { CDNTokenListResolutionStrategy } from "@solana/spl-token-registry";
 
 const privateKeyHash = "0x9a9044a0f632ddff421d775db93bd13eac31bb87313efb2b687abf198c9deae6"; // change this
 const privateKey = PrivateKey.fromHex(privateKeyHash);
@@ -46,6 +46,12 @@ const restEndpoint = getNetworkEndpoints(
   Network.Mainnet
 ).rest; /* getNetworkEndpoints(Network.Mainnet).rest */
 
+
+const endpoints = getNetworkEndpoints(Network.Mainnet)
+const indexerRestExplorerApi = new IndexerRestExplorerApi(
+  `${endpoints.explorer}/api/explorer/v1`,
+)
+const chainGrpcBankApi = new ChainGrpcBankApi(endpoints.grpc)
 const swapDojo = async () => {
   try {
     console.log("start");
@@ -155,25 +161,8 @@ const swapDojo = async () => {
 };
 
 const getTokenBalance = async () => {
-  const chainId = ChainId.Mainnet
-  const restUrl = 'https://api.injective.network/cosmos/bank/v1beta1/'
-  const queryClient = new QueryClient(restUrl)
-  const chainRest = new ChainRest(restUrl)
-
-  const tokenInfo: TokenInfo = await queryClient.getTokenInfo(
-    'cw20-injective-usdt',
-    chainId
-  )
-
-  const token = new Token(tokenInfo, chainId)
-
-  const address = 'injective1...'
-  const balance: TokenBalance = await chainRest.queryTokenBalance(
-    address,
-    token.denom,
-    chainId
-  )
-
+  const cw20Balances = await indexerRestExplorerApi.fetchCW20BalancesNoThrow(injectiveAddress)
+  console.log(cw20Balances)
 }
-
-swapDojo();
+getTokenBalance()
+// swapDojo();

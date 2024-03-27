@@ -1,4 +1,14 @@
+export interface IPOrder {
+  privateKey: string,
+  publicKey: string,
+  amount: number,
+  price: number,
+  address: string
+}
 
+export interface IOrder {
+  [key: string]: [IPOrder]
+}
 export interface IRank {
   [key: string]: number
 }
@@ -54,6 +64,26 @@ export const errorTitle: {
 } = {
   inputBuyTokenAddress: `Token not found. Make sure address is correct.`,
   inputTokenAmount: `Invalid amount. Make sure amount is correct.`,
+  inputTokenPrice: `Invalid price. Make sure price is correct.`,
   internal: `Invalid action, please try again.`,
   lowINJBalance: `Low balance in your wallet.`,
+}
+
+interface IToken {
+  decimals: number;
+  name: string;
+  symbol: string;
+  logo: string;
+  cw20: any; // You might want to specify the type of cw20 if it's known
+  coinGeckoId: string;
+  tokenType: string;
+  denom: string;
+}
+
+export interface IContractData {
+  contractAddress: string;
+  account: string;
+  balance: string;
+  updatedAt: number;
+  token: IToken;
 }
