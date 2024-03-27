@@ -1,0 +1,13 @@
+{
+    "6381452440": {
+        "announcement": false,
+        "buy1": 1,
+        "buy2": 2,
+        "sell1": 20,
+        "sell2": 80,
+        "slippage1": 10,
+        "slippage2": 20,
+        "priority": "Medium",
+        "priorityAmount": 0.0001
+    }
+}
