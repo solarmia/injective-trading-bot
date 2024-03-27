@@ -1,28 +1,22 @@
 import axios from 'axios';
 import fs from 'fs';
-import * as web3 from '@solana/web3.js'
-import bs58 from 'bs58';
-import { TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID, createTransferInstruction, getAssociatedTokenAddress, getMint, getOrCreateAssociatedTokenAccount, getTokenMetadata } from '@solana/spl-token';
 
-import { RpcURL, dexUrl, feeAccountAddr, feeAccountSecret, quoteURL, swapURL, statusPath, tokensPath, fee, injAddr } from '../config';
+import { dexUrl, injAddr } from '../config';
 import { ChainId } from "@injectivelabs/ts-types";
 import {
   Network,
   getNetworkEndpoints,
   getNetworkInfo,
 } from "@injectivelabs/networks";
-import { Address, BaseAccount, ChainRestAuthApi, ChainRestTendermintApi, MsgExecuteContract, Msgs, PrivateKey, TxClient, TxGrpcClient, createTransaction } from '@injectivelabs/sdk-ts';
+import { BaseAccount, ChainRestAuthApi, ChainRestTendermintApi, Msgs, PrivateKey, TxGrpcClient, createTransaction } from '@injectivelabs/sdk-ts';
 import {
   DEFAULT_STD_FEE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   BigNumberInBase,
-  formatWalletAddress,
 } from "@injectivelabs/utils";
 
 const chainId = ChainId.Mainnet; /* ChainId.Mainnet */
-const restEndpoint = getNetworkEndpoints(
-  Network.Mainnet
-).rest;
+const restEndpoint = getNetworkEndpoints(Network.Mainnet).rest;
 const chainRestAuthApi = new ChainRestAuthApi(restEndpoint);
 const chainRestTendermintApi = new ChainRestTendermintApi(restEndpoint);
 
@@ -91,11 +85,7 @@ export const swap = async (privateKey: PrivateKey, injectiveAddress: string, pub
     /** Simulate transaction */
     const simulationResponse = await txService.simulate(txRaw);
 
-    // console.log(
-    //   `Transaction simulation response: ${JSON.stringify(
-    //     simulationResponse.gasInfo
-    //   )}`
-    // );
+    // console.log(`Transaction simulation response: ${JSON.stringify(simulationResponse.gasInfo)}`);
 
     /** Broadcast transaction */
     const txResponse = await txService.broadcast(txRaw);
@@ -106,9 +96,7 @@ export const swap = async (privateKey: PrivateKey, injectiveAddress: string, pub
       console.error(`Transaction failed: ${txResponse.rawLog}`);
       return { success: false, data: txResponse.rawLog }
     } else {
-      console.error(
-        `Broadcasted transaction hash: ${JSON.stringify(txResponse.txHash)}`
-      );
+      console.log(`Broadcasted transaction hash: ${JSON.stringify(txResponse.txHash)}`);
       return { success: true, data: txResponse.txHash }
     }
   } catch (e) {

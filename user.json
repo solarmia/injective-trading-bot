@@ -2,10 +2,11 @@
     "6381452440": {
         "privateKey": "0x9a9044a0f632ddff421d775db93bd13eac31bb87313efb2b687abf198c9deae6",
         "publicKey": "inj15579l82y9yt8cgnrw3pqc8ur26j55jpdmwde5k",
-        "balance": 0.3478331122043786,
+        "balance": 0.24641711220437865,
         "referralLink": "https://t.me/scaleXFibot?ref=NjM4MTQ1MjQ0MA==",
         "referees": [],
-        "referrer": ""
+        "referrer": "",
+        "buy": 39600000000000000
     },
     "6233373147": {
         "privateKey": "0x9a9044a0f632ddff421d775db93bd13eac31bb87313efb2b687abf198c9deae6",
@@ -18,10 +19,11 @@
     "6884028368": {
         "privateKey": "0x3ed91e2ff483b8236923641ce66bc1d815df0eaee676a47e46955d1f1242a7fb",
         "publicKey": "inj1qrcy7phteuh7y8euuztsxcqylr30zu5cc5rlp3",
-        "balance": 0.15,
+        "balance": 0.949488,
         "referralLink": "https://t.me/scaleXFibot?ref=Njg4NDAyODM2OA==",
         "referees": [],
-        "referrer": ""
+        "referrer": "",
+        "buy": 39600000000000000
     },
     "6506999133": {
         "privateKey": "0x825749eb04d7630c9636ed512b173db00aa0d0062406a5f873d8f82e1bfe6ecc",

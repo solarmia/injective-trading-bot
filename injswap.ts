@@ -13,15 +13,23 @@ import {
   InjectiveDirectEthSecp256k1Wallet,
   msgsOrMsgExecMsgs,
   toBase64,
+  IndexerRestExplorerApi,
 } from "@injectivelabs/sdk-ts";
-import { IndexerRestExplorerApi } from "@injectivelabs/sdk-ts";
+import {
+  TokenInfo,
+
+} from '@injectivelabs/sdk-ts'
 import {
   DEFAULT_STD_FEE,
   DEFAULT_BLOCK_TIMEOUT_HEIGHT,
   BigNumberInBase,
   formatWalletAddress,
 } from "@injectivelabs/utils";
-import { ChainId } from "@injectivelabs/ts-types";
+import {
+  ChainId, TokenBalance,
+  ChainRest,
+  QueryClient, Token
+} from "@injectivelabs/ts-types";
 import {
   Network,
   getNetworkEndpoints,
@@ -57,41 +65,41 @@ const swapDojo = async () => {
       DEFAULT_BLOCK_TIMEOUT_HEIGHT
     );
 
-    const swapMsg = MsgExecuteContract.fromJSON({
-      sender: signer.address,
-      contractAddress: "inj1er0535pz8k3l6wpzm263vv9gmkghwct7he85pl",
-      funds: {
-        denom: "inj",
-        amount: "100000000000000",
-      },
-      msg: {
-        swap: {
-          offer_asset: {
-            info: { 
-              native_token: {
-                denom: "inj",
-              },
-            },
-            amount: "100000000000000",
-          },
-          max_spread: "0.05",
-          to: signer.address,
-        },
-      },
-    });
     // const swapMsg = MsgExecuteContract.fromJSON({
     //   sender: signer.address,
-    //   contractAddress: "inj1zdj9kqnknztl2xclm5ssv25yre09f8908d4923", // Enter token address
+    //   contractAddress: "inj1er0535pz8k3l6wpzm263vv9gmkghwct7he85pl", //pair
+    //   funds: {
+    //     denom: "inj",
+    //     amount: "100000000000000",
+    //   },
     //   msg: {
-    //     send: {
-    //       contract: "inj1grtkdl7552kjsrkqn5wqpk4fp8m3m4y0tzqfqr", // Enter pair address
-    //       amount: "9000000000000000000", // The amount of the origin token to swap from
-    //       msg: toBase64({
-    //         swap: { max_spread: "0.05" }, // optional
-    //       }),
+    //     swap: {
+    //       offer_asset: {
+    //         info: { 
+    //           native_token: {
+    //             denom: "inj",
+    //           },
+    //         },
+    //         amount: "100000000000000",
+    //       },
+    //       max_spread: "0.05",
+    //       to: signer.address,
     //     },
     //   },
     // });
+    const swapMsg = MsgExecuteContract.fromJSON({
+      sender: signer.address,
+      contractAddress: "inj1zdj9kqnknztl2xclm5ssv25yre09f8908d4923", // Enter token address
+      msg: {
+        send: {
+          contract: "inj1grtkdl7552kjsrkqn5wqpk4fp8m3m4y0tzqfqr", // Enter pair address
+          amount: "9000000000000000000", // The amount of the origin token to swap from
+          msg: toBase64({
+            swap: { max_spread: "0.05" }, // optional
+          }),
+        },
+      },
+    });
 
 
     console.log("msg -> \n", swapMsg);
@@ -145,5 +153,27 @@ const swapDojo = async () => {
     console.log(e);
   }
 };
+
+const getTokenBalance = async () => {
+  const chainId = ChainId.Mainnet
+  const restUrl = 'https://api.injective.network/cosmos/bank/v1beta1/'
+  const queryClient = new QueryClient(restUrl)
+  const chainRest = new ChainRest(restUrl)
+
+  const tokenInfo: TokenInfo = await queryClient.getTokenInfo(
+    'cw20-injective-usdt',
+    chainId
+  )
+
+  const token = new Token(tokenInfo, chainId)
+
+  const address = 'injective1...'
+  const balance: TokenBalance = await chainRest.queryTokenBalance(
+    address,
+    token.denom,
+    chainId
+  )
+
+}
 
 swapDojo();

@@ -132,6 +132,19 @@ bot.on(`message`, async (msg) => {
                 )
 
                 break
+            case '/leaderboard':
+                await bot.deleteMessage(chatId, msgId)
+                result = await commands.leaderBoard()
+                bot.sendMessage(
+                    chatId,
+                    result.title,
+                    {
+                        reply_markup: {
+                            inline_keyboard: result.content,
+                            resize_keyboard: true
+                        }, parse_mode: 'HTML'
+                    })
+                break
 
             case '/referral':
                 await bot.deleteMessage(chatId, msgId)
@@ -266,12 +279,13 @@ bot.on('callback_query', async (query: CallbackQuery) => {
                 break
 
             case 'sell':
+                result = await commands.sell(chatId)
                 await bot.sendMessage(
                     chatId,
-                    (await commands.sell(chatId)).title,
+                    result.title,
                     {
                         reply_markup: {
-                            inline_keyboard: (await commands.sell(chatId)).content,
+                            inline_keyboard: result.content,
                             resize_keyboard: true
                         }, parse_mode: 'HTML'
                     }
@@ -392,6 +406,19 @@ bot.on('callback_query', async (query: CallbackQuery) => {
 
                 break
 
+            case 'leaderboard':
+                result = await commands.leaderBoard()
+                bot.sendMessage(
+                    chatId,
+                    result.title,
+                    {
+                        reply_markup: {
+                            inline_keyboard: result.content,
+                            resize_keyboard: true
+                        }, parse_mode: 'HTML'
+                    })
+                break
+
             case 'pin':
                 await bot.editMessageReplyMarkup(
                     {
@@ -506,32 +533,21 @@ bot.on('callback_query', async (query: CallbackQuery) => {
                         })
                         return
                     }
-                    if (await commands.checkINJBalance(chatId, msg.text)) {
-                        const issue = commands.invalid('lowINJBalance')
-                        await bot.sendMessage(chatId, issue.title, {
-                            reply_markup: {
-                                inline_keyboard: issue.content,
-                                resize_keyboard: true
-                            }, parse_mode: 'HTML'
-                        })
-                        return
-                    }
                     const txConfirm = await bot.sendMessage(chatId, 'Transaction sent. Confirming now...')
-                    const tx = await commands.buyTokens(chatId, msg.text!, address, 'buy')
-                    // bot.deleteMessage(chatId, txConfirm.message_id)
-                    // if (tx)
-                    //     bot.sendMessage(chatId,
-                    //         tx.title, {
-                    //         reply_markup: {
-                    //             inline_keyboard: tx.content,
-                    //             resize_keyboard: true
-                    //         }, parse_mode: 'HTML'
-                    //     }
-                    //     )
+                    const tx = await commands.swapTokens(chatId, msg.text!, address, 'buy')
+                    bot.deleteMessage(chatId, txConfirm.message_id)
+                    bot.sendMessage(chatId,
+                        tx.title, {
+                        reply_markup: {
+                            inline_keyboard: tx.content,
+                            resize_keyboard: true
+                        }, parse_mode: 'HTML'
+                    }
+                    )
                 })
             } else {
                 const txConfirm = await bot.sendMessage(chatId, 'Transaction sent. Confirming now...')
-                const tx = await commands.buyTokens(chatId, method, address, 'buy')
+                const tx = await commands.swapTokens(chatId, method, address, 'buy')
                 bot.deleteMessage(chatId, txConfirm.message_id)
                 bot.sendMessage(chatId,
                     tx.title, {
@@ -582,7 +598,7 @@ bot.on('callback_query', async (query: CallbackQuery) => {
                         return
                     }
                     const txConfirm = await bot.sendMessage(chatId, 'Transaction sent. Confirming now...')
-                    const tx = await commands.buyTokens(chatId, msg.text!, address, 'sell')
+                    const tx = await commands.swapTokens(chatId, msg.text!, address, 'sell')
                     // if (tx['error']) {
                     //     await bot.deleteMessage(chatId, txConfirm.message_id)
                     //     if (tx.signature) await bot.sendMessage(
@@ -600,7 +616,7 @@ bot.on('callback_query', async (query: CallbackQuery) => {
                 })
             } else {
                 const txConfirm = await bot.sendMessage(chatId, 'Transaction sent. Confirming now...')
-                const tx = await commands.buyTokens(chatId, method, address, 'sell')
+                const tx = await commands.swapTokens(chatId, method, address, 'sell')
                 // if (tx['error']) {
                 //     await bot.deleteMessage(chatId, txConfirm.message_id)
                 //     if (tx.signature) await bot.sendMessage(

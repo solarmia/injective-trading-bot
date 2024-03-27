@@ -1,6 +1,6 @@
 import { dojoPairUrl, injExplorer } from '../config';
 import { errorTitle } from '../utils/type';
-import { buyTokenHelper, checkInfo, checkValidAddr, createWalletHelper, fetch, getAllTokenList, getSetting, getTokenBalance, getTokenInfoHelper, importWalletHelper, setSettings } from './helper'
+import { swapTokenHelper, checkInfo, createWalletHelper, fetch, getAllTokenList, getSetting, getTokenInfoHelper, getTopTradersHelper, importWalletHelper, setSettings } from './helper'
 
 interface IConfirm {
     [key: string]: {
@@ -24,15 +24,25 @@ const confirmList: IConfirm =
         ]
     },
 }
+
 export const commandList = [
     { command: 'start', description: 'Start the bot' },
     { command: 'settings', description: 'Show the settings menu' },
     { command: 'wallet', description: 'View wallet info' },
     { command: 'buy', description: 'Buy tokens' },
     { command: 'sell', description: 'Sell your token' },
+    { command: 'leaderboard', description: 'Show 5 top traders ranking' },
     { command: 'referral', description: 'Refer your friend' },
     { command: 'help', description: 'Tips and faqs' }
 ];
+
+const mainContent = (pin: boolean = false) => [
+    [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
+    [{ text: `Wallet`, callback_data: 'wallet' }, { text: `Settings`, callback_data: 'settings' }],
+    [{ text: `Refer Friend`, callback_data: 'refer' }, { text: `Help`, callback_data: 'help' }],
+    [{ text: `Refresh`, callback_data: 'refresh' }, { text: `Leader Board`, callback_data: 'leaderboard' }],
+    [{ text: `${pin ? 'Unpin' : 'Pin'}`, callback_data: `${pin ? 'unpin' : 'pin'}` }],
+]
 
 export const welcome = async (chatId: number, botName?: string, pin: boolean = false) => {
 
@@ -52,12 +62,7 @@ To buy a token just enter a token address.
 
 For more info on your wallet and to retrieve your private key, tap the wallet button below. We guarantee the safety of user funds on ScaleXFi Bot, but if you expose your private key your funds will not be safe.`
 
-        const content = [
-            [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
-            [{ text: `Wallet`, callback_data: 'wallet' }, { text: `Settings`, callback_data: 'settings' }],
-            [{ text: `Refer Friend`, callback_data: 'refer' }, { text: `Help`, callback_data: 'help' }],
-            [{ text: `Refresh`, callback_data: 'refresh' }, { text: `${pin ? 'Unpin' : 'Pin'}`, callback_data: `${pin ? 'unpin' : 'pin'}` }],
-        ]
+        const content = mainContent(pin)
 
         return {
             title, content
@@ -94,12 +99,7 @@ To buy a token just enter a token address.
 
 For more info on your wallet and to retrieve your private key, tap the wallet button below. We guarantee the safety of user funds on ScaleXFi Bot, but if you expose your private key your funds will not be safe.`
 
-    const content = [
-        [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
-        [{ text: `Wallet`, callback_data: 'wallet' }, { text: `Settings`, callback_data: 'settings' }],
-        [{ text: `Refer Friend`, callback_data: 'refer' }, { text: `Help`, callback_data: 'help' }],
-        [{ text: `Refresh`, callback_data: 'refresh' }, { text: `${'Pin'}`, callback_data: `${'pin'}` }],
-    ]
+    const content = mainContent()
 
     return {
         title, content
@@ -122,12 +122,7 @@ To buy a token just enter a token address.
 
 For more info on your wallet and to retrieve your private key, tap the wallet button below. We guarantee the safety of user funds on ScaleXFi Bot, but if you expose your private key your funds will not be safe.`
 
-    const content = [
-        [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
-        [{ text: `Wallet`, callback_data: 'wallet' }, { text: `Settings`, callback_data: 'settings' }],
-        [{ text: `Refer Friend`, callback_data: 'refer' }, { text: `Help`, callback_data: 'help' }],
-        [{ text: `Refresh`, callback_data: 'refresh' }, { text: `${'Pin'}`, callback_data: `${'pin'}` }],
-    ]
+    const content = mainContent()
     return {
         title, content
     }
@@ -172,12 +167,7 @@ To buy a token just enter a token address.
 
 For more info on your wallet and to retrieve your private key, tap the wallet button below. We guarantee the safety of user funds on ScaleXFi Bot, but if you expose your private key your funds will not be safe.`
 
-    const content = [
-        [{ text: `Buy`, callback_data: 'buy' }, { text: `Sell`, callback_data: 'sell' }],
-        [{ text: `Wallet`, callback_data: 'wallet' }, { text: `Settings`, callback_data: 'settings' }],
-        [{ text: `Refer Friend`, callback_data: 'refer' }, { text: `Help`, callback_data: 'help' }],
-        [{ text: `Refresh`, callback_data: 'refresh' }, { text: `${'Pin'}`, callback_data: `${'pin'}` }],
-    ]
+    const content = mainContent()
 
     return {
         title, content
@@ -410,7 +400,6 @@ export const getTokenInfo = async (chatId: number, address: string, method: stri
         const result = await getTokenInfoHelper(address, chatId)
         if (result) {
             if (method == 'buy') {
-                // Price Impact (2.0000 SOL): -3.00%
                 const caption = `${result.tokenInfo.name} | ${result.tokenInfo.symbol} | ${address}
 
 Price: $${result.price}
@@ -422,7 +411,7 @@ To buy press one of the buttons below.`
 
                 const { buy1, buy2 } = await getSetting(chatId)
                 const content = [
-                    [{ text: `Token Explorer`, url: `${injExplorer}/${address}` }, { text: `Pair Explorer`, url: `${dojoPairUrl}/${result.pairAddress}` }],
+                    [{ text: `Token Explorer`, url: `${injExplorer}/account/${address}` }, { text: `Pair Explorer`, url: `${dojoPairUrl}/${result.pairAddress}` }],
                     [{ text: `Buy ${buy1} INJ`, callback_data: `buyS:${result.pairAddress}` }, {
                         text: `Buy ${buy2} INJ`, callback_data: `buyL:${result.pairAddress}`
                     }, { text: `Buy X INJ`, callback_data: `buyX:${result.pairAddress}` }],
@@ -430,6 +419,25 @@ To buy press one of the buttons below.`
                 ]
                 return { caption, content }
             } else {
+                const caption = `${result.tokenInfo.name} | ${result.tokenInfo.symbol} | ${address}
+
+Price: $${result.price}
+5m: ${result.priceChange.m5}%, 1h: ${result.priceChange.h1}%, 6h: ${result.priceChange.h6}%, 24h: ${result.priceChange.h24}%
+Market Cap: $${result.fdv}
+
+Wallet Balance: ${result.balance} INJ
+To buy press one of the buttons below.`
+
+                const { sell1, sell2 } = await getSetting(chatId)
+
+                const content = [
+                    [{ text: `Token Explorer`, url: `${injExplorer}/account/${address}` }, { text: `Pair Explorer`, url: `${dojoPairUrl}/${result.pairAddress}` }],
+                    [{ text: `Sell ${sell1} %`, callback_data: `sellS:${result.pairAddress}` }, {
+                        text: `Sell ${sell2} %`, callback_data: `sellL:${result.pairAddress}`
+                    }, { text: `Sell X %`, callback_data: `sellX:${result.pairAddress}` }],
+                    [{ text: `Close`, callback_data: `cancel` }]
+                ]
+                return { caption, content }
                 //                 const balance = await getTokenBalance(chatId, address)
                 //                 console.log(balance.value.uiAmount, result.decimals)
                 //                 const caption = `Name: ${result.name}
@@ -461,14 +469,13 @@ To buy press one of the buttons below.`
     }
 }
 
-export const buyTokens = async (chatId: number, value: string, address: string, type: string) => {
-    const result = await buyTokenHelper(chatId, value, address, type)
+export const swapTokens = async (chatId: number, value: string, address: string, type: string) => {
+    const result = await swapTokenHelper(chatId, value, address, type)
     if (result && result?.success) {
         const title = `Transaction Sucesss `
         const content = [[{ text: `View on explorer`, url: `https://explorer.injective.network/transaction/${result.data}/` }]]
         return { title, content }
-    }
-    else {
+    } else {
         const title = `Transaction Failed\n${result?.data}`
         const content = [[{ text: `Close`, callback_data: `cancel` }]]
         return { title, content }
@@ -512,4 +519,10 @@ Is there a difference between @Scale Bot and other bots?
 No, they are all the same bot and you can use them interchangeably. 
 And Scale Bot has also the feature of addtional fee for increasing transaction priority.`
     return title
+}
+
+export const leaderBoard = async () => {
+    const title = `Top trader ranking`
+    const content = await getTopTradersHelper()
+    return { title, content }
 }

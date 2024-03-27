@@ -1,45 +1,25 @@
-import * as web3 from '@solana/web3.js'
-import { ethers } from 'ethers';
-import { generateMnemonic, validateMnemonic } from "bip39";
-import { ChainGrpcBankApi, IndexerGrpcAccountPortfolioApi, MsgExecuteContract, MsgSend, IndexerGrpcAccountApi } from '@injectivelabs/sdk-ts'
+import { generateMnemonic } from "bip39";
+import { ChainGrpcBankApi, IndexerGrpcAccountPortfolioApi, MsgExecuteContract, MsgSend, PrivateKey } from '@injectivelabs/sdk-ts'
 import { getNetworkEndpoints, Network } from '@injectivelabs/networks'
-import { PrivateKey } from '@injectivelabs/sdk-ts'
-import { TOKEN_PROGRAM_ID, getAssociatedTokenAddress, getOrCreateAssociatedTokenAccount, getTokenMetadata } from '@solana/spl-token';
-import bs58 from 'bs58';
-import { Coin } from '@injectivelabs/ts-types';
 import { encode } from 'js-base64';
 import axios from 'axios';
-import fs from 'fs';
-import { ChainId } from "@injectivelabs/ts-types";
 
-import { RpcURL, userPath, statusPath, userTokenPath, tokensPath, logoPath, settingsPath, fee, quoteURL, feeAccountAddr, feeAccountSecret, swapURL, txPath, poolListPath, dexUrl, injAddr, treasury } from '../config';
-import { ISettings, IUserToken, ITokenData, Iuser, initialSetting, IUserTokenList, ITxes, IPair, IPairs, IPool } from '../utils/type';
+import { userPath, settingsPath, fee, dexUrl, injAddr, treasury, rankPath, injExplorer } from '../config';
+import { IRank, ISettings, Iuser, initialSetting, } from '../utils/type';
 import { getTokenDecimal, readData, swap, tokenInfo, writeData } from '../utils';
-import { toEditorSettings } from 'typescript';
-import { LIQUIDITY_STATE_LAYOUT_V4 } from '@raydium-io/raydium-sdk';
 
 let userData: Iuser = {}
-let userTokens: IUserTokenList = {}
-let tokens: IPairs
 let settings: ISettings = {}
-let tx: ITxes = {}
-let poolList: IPool[] = []
+let rankData: IRank = {}
 
-const connection = new web3.Connection(RpcURL)
 const endpoints = getNetworkEndpoints(Network.Mainnet)
-const indexerGrpcAccountPortfolioApi = new IndexerGrpcAccountPortfolioApi(
-  endpoints.indexer,
-)
-const indexerGrpcAccountApi = new IndexerGrpcAccountApi(endpoints.indexer)
+const indexerGrpcAccountPortfolioApi = new IndexerGrpcAccountPortfolioApi(endpoints.indexer)
 const chainGrpcBankApi = new ChainGrpcBankApi(endpoints.grpc)
 
 export const init = async () => {
   userData = await readData(userPath)
-  userTokens = await readData(userTokenPath)
-  tokens = await readData(tokensPath)
   settings = await readData(settingsPath)
-  tx = await readData(txPath)
-  poolList = await readData(poolListPath)
+  rankData = await readData(rankPath)
 }
 
 export const checkInfo = async (chatId: number) => {
@@ -90,9 +70,6 @@ export const createWalletHelper = async (chatId: number, botName: string) => {
   const publicKey = privateKey.toAddress().toBech32()
   console.log({ injectiveAddress: publicKey, str: publicKey.toString(), base: privateKey.toPublicKey().toBase64() })
 
-  // const newKepair = new web3.Keypair();
-  // const publicKey = newKepair.publicKey.toString();
-  // const privateKey = bs58.encode(Buffer.from(newKepair.secretKey))
   const referralLink = `https://t.me/${botName}?ref=${encode(chatId.toString())}`
   userData[chatId] = {
     privateKey: privateKey.toPrivateKeyHex(),
@@ -100,7 +77,9 @@ export const createWalletHelper = async (chatId: number, botName: string) => {
     balance: 0,
     referralLink,
     referees: [],
-    referrer: ''
+    referrer: '',
+    buy: 0,
+    sell: 0
   }
   writeData(userData, userPath)
   return {
@@ -112,7 +91,6 @@ export const createWalletHelper = async (chatId: number, botName: string) => {
 export const importWalletHelper = async (chatId: number, privateKeyHex: string, botName: string) => {
   const privateKey = PrivateKey.fromHex(privateKeyHex)
   const publicKey = privateKey.toAddress().toBech32()
-  // const publicKey = privateKey.toPublicKey().toBase64()
   const referralLink = `https://t.me/${botName}?ref=${encode(chatId.toString())}`
   try {
     const balance = await getINJBalance(userData[chatId].publicKey)
@@ -122,7 +100,9 @@ export const importWalletHelper = async (chatId: number, privateKeyHex: string, 
       balance,
       referralLink,
       referees: [],
-      referrer: ''
+      referrer: '',
+      buy: 0,
+      sell: 0
     }
     writeData(userData, userPath)
     return {
@@ -139,7 +119,9 @@ export const importWalletHelper = async (chatId: number, privateKeyHex: string, 
       balance: 0,
       referralLink,
       referees: [],
-      referrer: ''
+      referrer: '',
+      buy: 0,
+      sell: 0
     }
     writeData(userData, userPath)
     return {
@@ -157,8 +139,6 @@ export const checkValidAddr = async (addr: string) => {
     const info = await tokenInfo(addr)
     if (!info) return
     const dc = await getTokenDecimal(addr)
-    tokens[addr] = { ...info, decimals: dc }
-    writeData(tokens, tokensPath)
     let currentToken
     if (info.baseToken.address == addr) currentToken = { ...info.baseToken, decimals: dc }
     else currentToken = { ...info.quoteToken, decimals: dc }
@@ -213,17 +193,7 @@ export const setSettings = async (chatId: number, category: string, value?: any)
   return settings[chatId]
 }
 
-export const getTokenBalance = async (chatId: number, address: string) => {
-  const sourceAccount = await getAssociatedTokenAddress(
-    new web3.PublicKey(address),
-    new web3.PublicKey(userData[chatId].publicKey)
-  );
-
-  const info = await connection.getTokenAccountBalance(sourceAccount);
-  return info
-}
-
-export const buyTokenHelper = async (chatId: number, value: string, tokenAddr: string, type: string) => {
+export const swapTokenHelper = async (chatId: number, value: string, tokenAddr: string, type: string) => {
   settings = await readData(settingsPath)
   userData = await readData(userPath)
   const setInfo = settings[chatId]
@@ -247,10 +217,10 @@ export const buyTokenHelper = async (chatId: number, value: string, tokenAddr: s
       default:
         amount = Number(value)
     }
+    if (amount > userData[chatId].balance) return { success: false, data: 'Insufficient balance' }
     const payAmount = Number(amount) * (1 - fee / 100) * Math.pow(10, 18)
     const treasuryAmount = Number(amount) * (fee / 100) * Math.pow(10, 18)
 
-    // try {
     const slippageBps = (setInfo.slippage1 / 100).toString()
 
     const feeJSONMsg = {
@@ -289,87 +259,46 @@ export const buyTokenHelper = async (chatId: number, value: string, tokenAddr: s
     const swapMsg = MsgExecuteContract.fromJSON(swapJSONMsg)
     const msg = [feeMsg, swapMsg]
     const result = await swap(privateKey, injectiveAddress, pubKey, msg)
+    if (result.success) {
+      const currentBuy = isNaN(Number(userData[chatId].buy)) ? 0 : Number(userData[chatId].buy)
+      userData[chatId].buy = currentBuy + payAmount
+      writeData(userData, userPath)
+      const currentRank = isNaN(Number(rankData[chatId])) ? 0 : Number(rankData[chatId])
+      rankData[chatId] = currentRank + payAmount
+      writeData(rankData, rankPath)
+    }
     return result
 
   } else {
-    //   switch (value) {
-    //     case 'sellS':
-    //       amount = setInfo.sell1
-    //       break
-    //     case 'sellL':
-    //       amount = setInfo.sell2
-    //       break
-    //     default:
-    //       amount = Number(value)
-    //   }
-    //   const bal = await getTokenBalance(chatId, tokenAddr)
-    //   amount = Math.floor(bal.value.uiAmount! * Number(amount) / 100 * Math.pow(10, (await checkValidAddr(tokenAddr))?.decimals!))
-    //   // try {
-    //   const slippageBps = setInfo.slippage2
+    // switch (value) {
+    //   case 'sellS':
+    //     amount = setInfo.sell1
+    //     break
+    //   case 'sellL':
+    //     amount = setInfo.sell2
+    //     break
+    //   default:
+    //     amount = Number(value)
+    // }
+    // const bal = await getTokenBalance(chatId, tokenAddr)
+    // const payAmount = Math.floor(bal.value.uiAmount! * Number(amount) / 100 * Math.pow(10, (await checkValidAddr(tokenAddr))?.decimals!))
+    // // try {
+    // const slippageBps = setInfo.slippage2
 
-    //   const result = await tokenSwap(ammId, tokenAddr, tokenDecimals, injAddr, 9, amount, slippageBps, platformFeeBps, userPublicKey, userPrivateKey, computeUnitPriceMicroLamports)
-    //   console.log('result', result)
-    //   if (!result.error) userTokens[chatId].push({ token: tokenAddr })
-    //   return result
-    //   // } catch (e) {
-    //   //   if (e instanceof Error) {
-    //   //     console.log('name', e.name)
-    //   //     console.log('message', e.message)
-    //   //     return { error: e.name }
-    //   //   } else return undefined
-    //   // }
+    // const result = await tokenSwap(ammId, tokenAddr, tokenDecimals, injAddr, 9, amount, slippageBps, platformFeeBps, userPublicKey, userPrivateKey, computeUnitPriceMicroLamports)
+    // console.log('result', result)
+    // if (!result.error) userTokens[chatId].push({ token: tokenAddr })
+    // return result
+    // } catch (e) {
+    //   if (e instanceof Error) {
+    //     console.log('name', e.name)
+    //     console.log('message', e.message)
+    //     return { error: e.name }
+    //   } else return undefined
+    // }
   }
 }
 
-export const getAllTokenList = async (chatId: number) => {
-  userData = await readData(userPath)
-  userTokens = await readData(userTokenPath)
-
-  const subaccountsList = await indexerGrpcAccountApi.fetchSubaccountsList(
-    userData[chatId].publicKey,
-  )
-
-  console.log(subaccountsList)
-
-  return 
-
-  // const tokenMetadata = await Promise.all(
-  //   tokenAddresses.map(async (tokenAddress) => {
-  //     const token = new Token(connection, tokenAddress, TOKEN_PROGRAM_ID);
-  //     const tokenInfo = await token.getMintInfo();
-  //     return {
-  //       tokenAddress: tokenAddress.toBase58(),
-  //       tokenName: tokenInfo.name,
-  //       tokenSymbol: tokenInfo.symbol,
-  //       tokenDecimals: tokenInfo.decimals,
-  //     };
-  //   })
-  // );
-}
-
-const getPoolId = async (token: string) => {
-  if (tokens[token].baseToken.address == injAddr || tokens[token].quoteToken.address == injAddr) return tokens[token].pairAddress
-  else {
-    for (let i = 0; i < poolList.length; i++) {
-      if ((poolList[i].tokenA == token && poolList[i].tokenB == injAddr) || (poolList[i].tokenB == token && poolList[i].tokenA == injAddr)) {
-        return poolList[i].pair
-
-        // const account = await connection.getAccountInfo(new web3.PublicKey(poolList[i].pair))
-        // if (account) {console.log(LIQUIDITY_STATE_LAYOUT_V4.decode(account.data).swapBaseInAmount.toString())}
-        // const account = await connection.getBalance(new web3.PublicKey(poolList[i].pair))
-        // console.log(account, item.pair)
-        // if (poolList[i].pair == '58oQChx4yWmvKdwLLZzBi4ChoCc2fqCUWBkwMihLYQo2') {
-        //   // // const info = bs58.encode(account);
-        //   // const info = bs58.encode(account?.data!);
-        //   // console.log(info)
-        //   if (account) {
-        //     console.log(LIQUIDITY_STATE_LAYOUT_V4.decode(account.data).quoteVault.toString())
-        //   }
-        // }
-      }
-    }
-  }
-}
 // -------------------------------------
 export const getTokenInfoHelper = async (address: string, chatId: number) => {
   const dex = (await axios.get(`${dexUrl}/${address}`)).data
@@ -386,4 +315,35 @@ export const getTokenInfoHelper = async (address: string, chatId: number) => {
       return { tokenInfo, price, priceChange, fdv, pairAddress, balance }
     }
   }
-} 
+}
+
+export const getTopTradersHelper = async () => {
+  rankData = await readData(rankPath)
+  const sortedData: [string, number][] = Object.entries(rankData).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const content: { text: string; url: string; }[][] = []
+  sortedData.map((item, idx) => {
+    content.push([{ text: `${idx} | ${userData[item[0]].publicKey} | ${item[1] / Math.pow(10, 18)} INJ`, url: `${injExplorer}/account/${userData[item[0]].publicKey}` }])
+  })
+  return content
+}
+
+export const getAllTokenList = async (chatId: number) => {
+  const address = userData[chatId].publicKey
+  // const data = await chainGrpcBankApi.fetchBalances(address)
+
+  // console.log(data)
+  // const portfolio = await indexerGrpcAccountPortfolioApi.fetchAccountPortfolioBalances(address)
+  // console.log(portfolio.bankBalancesList)
+  // let balance = 0
+  // for (let i = 0; i < portfolio.bankBalancesList.length; i++) {
+  //   if (portfolio.bankBalancesList[i].denom === 'inj') {
+  //     balance += Number(portfolio.bankBalancesList[i].amount) / 1e18
+  //   } else if (portfolio.bankBalancesList[i].denom === 'usdc') {
+  //     const tokenInfo = await tokenInfo('usdc')
+  //     const decimals = tokenInfo.decimals
+  //     const amount = Number(portfolio.bankBalancesList[i].amount) / Math.pow(10, decimals)
+  //     balance += amount
+  //   }
+  // }
+
+}
